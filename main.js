@@ -9,6 +9,8 @@ gain.connect(context.destination);
 
 gain.gain.value = 0;
 
+oscillator.type = 'sine'; // sine, triangle, square, sawtooth
+oscillator.frequency.value = 330;
 oscillator.start(0);
 
 $('body')
