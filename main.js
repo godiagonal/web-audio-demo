@@ -1,29 +1,48 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 
-var oscillator = context.createOscillator();
-var gain = context.createGain();
+var oscillators = {};
 
-oscillator.connect(gain);
-gain.connect(context.destination);
-
-gain.gain.value = 0;
-
-oscillator.start(0);
-
-setNote('A4');
-
-function setNote(note) {
+function oscillatorForNote(note) {
   var freq = teoria.note(note).fq();
+
+  if (!oscillators[freq]) {
+    oscillators[freq] = new Oscillator(freq, context.destination);
+  }
+
+  return oscillators[freq];
+}
+
+function Oscillator(freq, output) {
+  var oscillator = context.createOscillator();
+  var gain = context.createGain();
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+
+  gain.gain.value = 0;
+
   oscillator.frequency.value = freq;
-  $('#frequency').text(note + ' | ' + freq.toFixed(2));
+  oscillator.start(0);
+
+  this.start = function() {
+    gain.gain.value = 1;
+  }
+
+  this.stop = function() {
+    gain.gain.value = 0;
+  }
 }
 
 $(document)
   .on('keydown', function(e) {
     if (keyNotes[e.keyCode]) {
-      gain.gain.value = 1;
-      setNote(keyNotes[e.keyCode]);
+      oscillatorForNote(keyNotes[e.keyCode]).start();
+    }
+  })
+  .on('keyup', function(e) {
+    if (keyNotes[e.keyCode]) {
+      oscillatorForNote(keyNotes[e.keyCode]).stop();
     }
   });
 
