@@ -7,11 +7,19 @@ function oscillatorForNote(note) {
   var freq = teoria.note(note).fq();
 
   if (!oscillators[freq]) {
-    oscillators[freq] = new Oscillator(freq, context.destination);
+    oscillators[freq] = new Oscillator(freq, audioBus);
   }
 
   return oscillators[freq];
 }
+
+var audioBus = context.createGain();
+var distortion = new Distortion();
+var delay = new Delay();
+
+audioBus.connect(distortion.node);
+distortion.connect(delay.node);
+delay.connect(context.destination);
 
 $(document)
   .on('keydown', function(e) {
