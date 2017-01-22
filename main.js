@@ -13,27 +13,6 @@ function oscillatorForNote(note) {
   return oscillators[freq];
 }
 
-function Oscillator(freq, output) {
-  var oscillator = context.createOscillator();
-  var gain = context.createGain();
-
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-
-  gain.gain.value = 0;
-
-  oscillator.frequency.value = freq;
-  oscillator.start(0);
-
-  this.start = function() {
-    gain.gain.value = 1;
-  }
-
-  this.stop = function() {
-    gain.gain.value = 0;
-  }
-}
-
 $(document)
   .on('keydown', function(e) {
     var note = keyNotes[e.keyCode];
