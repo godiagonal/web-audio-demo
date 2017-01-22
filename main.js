@@ -9,8 +9,6 @@ gain.connect(context.destination);
 
 gain.gain.value = 0;
 
-oscillator.type = 'sine'; // sine, triangle, square, sawtooth
-oscillator.frequency.value = 330;
 oscillator.start(0);
 
 $('body')
@@ -20,3 +18,10 @@ $('body')
   .on('mouseup', function() {
     gain.gain.value = 0;
   });
+
+$('body').on('mousemove', function(e) {
+  var normalizedX = e.clientX / $(e.target).width();
+  var freq = normalizedX * 1000 + 80; // Range from 80 to 1080 Hz
+  oscillator.frequency.value = freq;
+  $('#frequency').text(Math.round(freq));
+});
