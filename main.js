@@ -36,13 +36,19 @@ function Oscillator(freq, output) {
 
 $(document)
   .on('keydown', function(e) {
-    if (keyNotes[e.keyCode]) {
-      oscillatorForNote(keyNotes[e.keyCode]).start();
+    var note = keyNotes[e.keyCode];
+    if (note) {
+      oscillatorForNote(note).start();
+      var keyId = note.replace('#', 'S');
+      $('#key-' + keyId).addClass('active');
     }
   })
   .on('keyup', function(e) {
-    if (keyNotes[e.keyCode]) {
-      oscillatorForNote(keyNotes[e.keyCode]).stop();
+    var note = keyNotes[e.keyCode];
+    if (note) {
+      oscillatorForNote(note).stop();
+      var keyId = note.replace('#', 'S');
+      $('#key-' + keyId).removeClass('active');
     }
   });
 
