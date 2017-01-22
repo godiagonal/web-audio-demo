@@ -10,6 +10,8 @@ function Oscillator(freq, output) {
   oscillator.frequency.value = freq;
   oscillator.start(0);
 
+  this.node = oscillator;
+
   this.start = function() {
     gain.gain.value = 1;
   }

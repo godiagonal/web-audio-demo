@@ -16,9 +16,10 @@ function oscillatorForNote(note) {
 var audioBus = context.createGain();
 var distortion = new Distortion();
 var delay = new Delay();
+var mainOscillator = new Oscillator(0, audioBus);
 
-audioBus.connect(distortion.node);
-distortion.connect(delay.node);
+audioBus.connect(delay.node);
+//distortion.connect(delay.node);
 delay.connect(context.destination);
 
 $(document)
@@ -39,17 +40,16 @@ $(document)
     }
   });
 
-// $('body')
-//   .on('mousedown', function() {
-//     gain.gain.value = 1;
-//   })
-//   .on('mouseup', function() {
-//     gain.gain.value = 0;
-//   });
-
-// $('body').on('mousemove', function(e) {
-//   var normalizedX = e.clientX / $(e.target).width();
-//   var freq = normalizedX * 1000 + 80; // Range from 80 to 1080 Hz
-//   oscillator.frequency.value = freq;
-//   $('#frequency').text(Math.round(freq));
-// });
+$('body')
+  .on('mousedown', function() {
+    mainOscillator.start();
+  })
+  .on('mouseup', function() {
+    mainOscillator.stop();
+  })
+  .on('mousemove', function(e) {
+    var normalizedX = e.clientX / $('body').width();
+    var freq = normalizedX * 1000 + 80; // Range from 80 to 1080 Hz
+    mainOscillator.node.frequency.value = freq.toFixed(2);
+    $('#frequency').text(Math.round(freq));
+  });
