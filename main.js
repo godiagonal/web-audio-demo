@@ -19,13 +19,21 @@ function setNote(note) {
   $('#frequency').text(note + ' | ' + freq.toFixed(2));
 }
 
-$('body')
-  .on('mousedown', function() {
-    gain.gain.value = 1;
-  })
-  .on('mouseup', function() {
-    gain.gain.value = 0;
+$(document)
+  .on('keydown', function(e) {
+    if (keyNotes[e.keyCode]) {
+      gain.gain.value = 1;
+      setNote(keyNotes[e.keyCode]);
+    }
   });
+
+// $('body')
+//   .on('mousedown', function() {
+//     gain.gain.value = 1;
+//   })
+//   .on('mouseup', function() {
+//     gain.gain.value = 0;
+//   });
 
 // $('body').on('mousemove', function(e) {
 //   var normalizedX = e.clientX / $(e.target).width();
